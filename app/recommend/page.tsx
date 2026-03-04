@@ -129,35 +129,45 @@ export default function RecommendPage() {
               최근 주문한 메뉴 카테고리
             </h2>
             <span className="text-xs text-muted-foreground">
-              편집 가능
+              선택 가능
             </span>
           </div>
-          {recentCategories.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-2">
-              최근 주문 내역이 없습니다. 아래에서 선호 카테고리를 선택해주세요.
-            </p>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              {recentCategories.map((category) => (
+          <div className="flex flex-wrap gap-2">
+            {MENU_CATEGORIES.map((category) => {
+              const isSelected = recentCategories.includes(category);
+
+              return (
                 <Badge
                   key={category}
-                  variant="secondary"
-                  className="cursor-pointer px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20"
+                  variant={isSelected ? "default" : "outline"}
+                  className={`cursor-pointer px-3 py-1.5 transition-all hover:bg-primary/10 ${
+                    isSelected ? "bg-primary text-primary-foreground" : ""
+                  }`}
                   onClick={() => toggleRecent(category)}
                 >
-                  {category} ×
+                  {category}
                 </Badge>
-              ))}
-            </div>
+              );
+            })}
+          </div>
+          {recentCategories.length === 0 && (
+            <p className="text-xs text-muted-foreground mt-2">
+              최근 주문한 카테고리를 선택해주세요
+            </p>
           )}
         </section>
 
         {/* 선호 카테고리 선택 */}
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-foreground">
-              선호하는 음식 카테고리
-            </h2>
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold text-foreground">
+                선호하는 음식 카테고리
+              </h2>
+              <Badge variant="secondary" className="text-xs">
+                선택사항
+              </Badge>
+            </div>
             <span className="text-xs text-muted-foreground">
               {preferredCategories.length}/3
             </span>
@@ -184,11 +194,11 @@ export default function RecommendPage() {
               );
             })}
           </div>
-          {preferredCategories.length >= 3 && (
-            <p className="text-xs text-muted-foreground mt-2">
-              최대 3개까지 선택 가능합니다
-            </p>
-          )}
+          <p className="text-xs text-muted-foreground mt-2">
+            {preferredCategories.length >= 3
+              ? "최대 3개까지 선택 가능합니다"
+              : "선택하지 않아도 추천받을 수 있어요"}
+          </p>
         </section>
 
         {/* 추천받기 버튼 */}
