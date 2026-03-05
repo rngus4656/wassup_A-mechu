@@ -23,10 +23,8 @@ export default function RecommendPage() {
   const router = useRouter();
   const { userId } = useUser();
 
-  // 시간대 (자동 감지 + 수동 선택)
-  const [timeSegment, setTimeSegment] = useState<TimeSegment>(() =>
-    getTimeSegment()
-  );
+  // 시간대 (자동 감지 + 수동 선택) - 초기값은 null로 설정하여 hydration mismatch 방지
+  const [timeSegment, setTimeSegment] = useState<TimeSegment | null>(null);
 
   // 최근 주문 카테고리 (사용자 이력 기반)
   const [recentCategories, setRecentCategories] = useState<MenuCategory[]>([]);
@@ -38,6 +36,11 @@ export default function RecommendPage() {
 
   // 로딩 상태
   const [isLoading, setIsLoading] = useState(false);
+
+  // 클라이언트에서 시간대 설정 (hydration 이후)
+  useEffect(() => {
+    setTimeSegment(getTimeSegment());
+  }, []);
 
   // 사용자 변경 시 최근 카테고리 업데이트
   useEffect(() => {
@@ -65,6 +68,7 @@ export default function RecommendPage() {
 
   // 추천 요청
   const handleSubmit = async () => {
+    if (!timeSegment) return;
     setIsLoading(true);
 
     // URL 파라미터 생성
@@ -111,7 +115,7 @@ export default function RecommendPage() {
             {TIME_SEGMENTS.map((segment) => (
               <Button
                 key={segment}
-                variant={timeSegment === segment ? "default" : "outline"}
+                variant={timeSegment !== null && timeSegment === segment ? "default" : "outline"}
                 size="sm"
                 onClick={() => setTimeSegment(segment)}
                 className="flex-1"
