@@ -46,7 +46,7 @@ export function PopularStores() {
     <div className="px-4 py-4">
       <h2 className="text-lg font-semibold mb-3 text-foreground">인기 맛집</h2>
       <div className="grid grid-cols-2 gap-3">
-        {popularStores.map((store) => (
+        {popularStores.map((store, index) => (
           <Card
             key={store.business_num}
             className="overflow-hidden border-0 shadow-sm"
@@ -57,6 +57,7 @@ export function PopularStores() {
                 alt={store.store_name}
                 fill
                 className="object-cover"
+                priority={index < 2}
               />
             </div>
             <CardContent className="p-3">
