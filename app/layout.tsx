@@ -46,11 +46,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-muted">
         <UserProvider>
-          <main className="min-h-screen bg-background">
-            {children}
-          </main>
+          <div className="mx-auto max-w-md min-h-screen bg-background shadow-xl">
+            <main className="min-h-screen">
+              {children}
+            </main>
+          </div>
           <Toaster position="top-center" />
         </UserProvider>
         <Analytics />
